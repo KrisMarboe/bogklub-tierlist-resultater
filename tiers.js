@@ -16,6 +16,15 @@
 
 const MAX_NAME_LEN = 200;
 const DEFAULT_TIERS = ['S','A','B','C','D','E','F'];
+const TIER_VALUES = {
+    "S": 0,
+    "A": 1,
+    "B": 2,
+    "C": 3,
+    "D": 4,
+    "E": 5,
+    "F": 6
+}
 const TIER_COLORS = [
 	// from S to F
 	'#ff6666',
@@ -38,7 +47,8 @@ let headers_orig_min_width;
 // DOM elems
 let images;
 let tierlist_div;
-let data;
+let user_data;
+let book_data;
 
 async function readDataJson() {
     const filePath = 'data/data.json';
@@ -63,10 +73,46 @@ async function readDataJson() {
     }
 }
 
+function compute_book_data(user_data) {
+    const bookData = {};
+
+    // Iterate through each person in the input data
+    for (const person in user_data) {
+        const rows = user_data[person].rows;
+
+        // Iterate through each tier and its books
+        rows.forEach(row => {
+            const tierName = row.name; // Tier name (S, A, B, etc.)
+            const books = row.imgs;
+
+            // Skip "EJ LÆST" (not rated)
+            if (tierName === "EJ LÆST") return;
+
+            // Add each book's tier value from this person
+            books.forEach(book => {
+                if (!bookData[book]) {
+                    bookData[book] = { values: {}, mean: 0 };
+                }
+                bookData[book].values[person] = TIER_VALUES[tierName];
+            });
+        });
+    }
+
+    // Compute mean values for each book
+    for (const book in bookData) {
+        const values = Object.values(bookData[book].values);
+        const meanValue = values.reduce((sum, val) => sum + val, 0) / values.length;
+        bookData[book].mean = meanValue;
+    }
+
+    return bookData;
+}
 
 window.addEventListener('load', () => {
 	tierlist_div =  document.querySelector('.tierlist');
-    data = readDataJson();
+    user_data = readDataJson();
+    book_data = compute_book_data(user_data);
+    console.log(book_data);
 
 	for (let i = 0; i < DEFAULT_TIERS.length; ++i) {
 		add_row(i, DEFAULT_TIERS[i]);
