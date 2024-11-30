@@ -106,6 +106,8 @@ function compute_book_data(user_data) {
         const meanValue = values.reduce((sum, val) => sum + val, 0) / values.length;
         bookData[book].mean = meanValue;
     }
+    
+    console.log(bookData);
 
     return bookData;
 }
@@ -113,7 +115,6 @@ function compute_book_data(user_data) {
 window.addEventListener('load', () => {
 	tierlist_div =  document.querySelector('.tierlist');
     user_data, book_data = readDataJson();
-    console.log(book_data);
 
 	for (let i = 0; i < DEFAULT_TIERS.length; ++i) {
 		add_row(i, DEFAULT_TIERS[i]);
