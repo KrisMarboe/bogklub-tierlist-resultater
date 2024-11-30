@@ -1,0 +1,168 @@
+/*
+	Offline Tierlist Maker
+	Copyright (C) 2022  silverweed
+
+ Everyone is permitted to copy and distribute verbatim or modified
+ copies of this license document, and changing it is allowed as long
+ as the name is changed.
+
+            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+
+  0. You just DO WHAT THE FUCK YOU WANT TO.
+*/
+
+'use strict';
+
+const MAX_NAME_LEN = 200;
+const DEFAULT_TIERS = ['S','A','B','C','D','E','F'];
+const TIER_COLORS = [
+	// from S to F
+	'#ff6666',
+	'#f0a731',
+	'#f4d95b',
+	'#66ff66',
+	'#58c8f4',
+	'#5b76f4',
+	'#f45bed'
+];
+
+let unique_id = 0;
+
+let unsaved_changes = false;
+
+// Contains [[header, input, label]]
+let all_headers = [];
+let headers_orig_min_width;
+
+// DOM elems
+let images;
+let tierlist_div;
+let data;
+
+async function readDataJson() {
+    const filePath = 'data/data.json';
+
+    try {
+        // Fetch the JSON data
+        const response = await fetch(filePath);
+        
+        if (!response.ok) {
+            throw new Error(`Failed to fetch the JSON file at ${filePath}. Status: ${response.status}`);
+        }
+
+        // Parse the JSON content
+        const data = await response.json();
+
+        // Log the JSON content
+        console.log('Data from JSON file:', data);
+
+        return data; // Return the parsed data if further processing is needed
+    } catch (error) {
+        console.error('Error reading the JSON file:', error);
+    }
+}
+
+
+window.addEventListener('load', () => {
+	tierlist_div =  document.querySelector('.tierlist');
+    data = readDataJson();
+
+	for (let i = 0; i < DEFAULT_TIERS.length; ++i) {
+		add_row(i, DEFAULT_TIERS[i]);
+	}
+	recompute_header_colors();
+
+	headers_orig_min_width = all_headers[0][0].clientWidth;
+
+	// load jpg images from /books folder and add them to the untiered_images
+	
+	var files = [
+		"animal_farm", "babel", "dune", "foundation", "hærværk", "handmaids_tale", "lord_of_the_flies", "seven_eleven", "slottet", "the_hitchhikers_guide_to_the_galaxy"
+	]
+	var file_names = ["Animal Farm", "Babel", "Dune", "Foundation", "Hærværk", "The Handmaid's Tale", "Lord of the Flies", "Seven Eleven", "Slottet", "The Hitchhiker's Guide to the Galaxy"]
+	images = [];
+    let top = DEFAULT_TIERS.length * (70) + 28 + DEFAULT_TIERS.length * 10;
+    let width = 20 + 100 + 30;
+    for (var i in files) {
+        width += 100;
+		let img = create_img_with_src(`books/${files[i]}.jpg`, file_names[i], top, width);
+		images.push(img);
+        document.body.appendChild(img);
+	}
+});
+
+function create_img_with_src(src, alt, top, width) {
+	let img = document.createElement('img');
+	img.src = src;
+	img.alt = alt;
+    img.style.top = `${top}px`;
+    img.style.left = `${width}px`;
+	img.style.userSelect = 'none';
+	img.classList.add('clickable');
+	img.clickable = true;
+	img.addEventListener('click', (evt) => {
+        console.log(img.alt);
+	});
+	
+	return img;
+}
+
+function create_label_input(row, row_idx, row_name) {
+	let input = document.createElement('input');
+	input.id = `input-tier-${unique_id++}`;
+	input.type = 'text';
+	input.addEventListener('change', resize_headers);
+	let label = document.createElement('label');
+	label.htmlFor = input.id;
+	label.innerText = row_name;
+
+	let header = row.querySelector('.header');
+	all_headers.splice(row_idx, 0, [header, input, label]);
+	header.appendChild(label);
+	header.appendChild(input);
+
+	// enable_edit_on_click(header, input, label);
+}
+
+function resize_headers() {
+	let max_width = headers_orig_min_width;
+	for (let [other_header, _i, label] of all_headers) {
+		max_width = Math.max(max_width, label.clientWidth);
+	}
+
+	for (let [other_header, _i2, _l2] of all_headers) {
+		other_header.style.minWidth = `${max_width}px`;
+	}
+}
+
+function add_row(index, name) {
+	let div = document.createElement('div');
+	let header = document.createElement('span');
+	let items = document.createElement('span');
+	div.classList.add('row');
+	header.classList.add('header');
+	items.classList.add('items');
+	div.appendChild(header);
+	div.appendChild(items);
+
+	let rows = tierlist_div.children;
+	if (index === rows.length) {
+		tierlist_div.appendChild(div);
+	} else {
+		let nxt_child = rows[index];
+		tierlist_div.insertBefore(div, nxt_child);
+	}
+
+	// make_accept_drop(div);
+	create_label_input(div, index, name);
+
+	return div;
+}
+
+function recompute_header_colors() {
+	tierlist_div.querySelectorAll('.row').forEach((row, row_idx) => {
+		let color = TIER_COLORS[row_idx % TIER_COLORS.length];
+		row.querySelector('.header').style.backgroundColor = color;
+	});
+}

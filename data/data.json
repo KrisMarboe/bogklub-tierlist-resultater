@@ -1,0 +1,67 @@
+{
+    "Alice": {
+        "title": "Den Store Bogklub Tier List",
+        "rows": [
+        {"name": "S", "imgs": ["Dune"]},
+        {"name": "A", "imgs": ["Animal Farm"]},
+        {"name": "B", "imgs": ["Slottet", "Hærværk"]},
+        {"name": "C", "imgs": ["Babel"]},
+        {"name": "D", "imgs": ["The Hitchhiker's Guide to the Galaxy"]},
+        {"name": "E", "imgs": ["Lord of the Flies", "Foundation"]},
+        {"name": "F", "imgs": ["The Handmaid's Tale", "Seven Eleven"]},
+        {"name": "EJ LÆST", "imgs": []}
+        ]
+    },
+    "Bob": {
+        "title": "Den Store Bogklub Tier List",
+        "rows": [
+        {"name": "S", "imgs": ["Animal Farm", "Hærværk"]},
+        {"name": "A", "imgs": ["Dune"]},
+        {"name": "B", "imgs": ["The Hitchhiker's Guide to the Galaxy"]},
+        {"name": "C", "imgs": ["Slottet", "Foundation"]},
+        {"name": "D", "imgs": ["Seven Eleven"]},
+        {"name": "E", "imgs": ["The Handmaid's Tale", "Babel"]},
+        {"name": "F", "imgs": ["Lord of the Flies"]},
+        {"name": "EJ LÆST", "imgs": []}
+        ]
+    },
+    "Charlie": {
+        "title": "Den Store Bogklub Tier List",
+        "rows": [
+        {"name": "S", "imgs": ["The Hitchhiker's Guide to the Galaxy"]},
+        {"name": "A", "imgs": ["Hærværk", "Slottet"]},
+        {"name": "B", "imgs": ["Dune", "Foundation"]},
+        {"name": "C", "imgs": ["Animal Farm"]},
+        {"name": "D", "imgs": ["Lord of the Flies", "Babel"]},
+        {"name": "E", "imgs": ["Seven Eleven"]},
+        {"name": "F", "imgs": ["The Handmaid's Tale"]},
+        {"name": "EJ LÆST", "imgs": []}
+        ]
+    },
+    "Diana": {
+        "title": "Den Store Bogklub Tier List",
+        "rows": [
+        {"name": "S", "imgs": ["Slottet", "Babel"]},
+        {"name": "A", "imgs": ["The Handmaid's Tale"]},
+        {"name": "B", "imgs": ["Hærværk", "Seven Eleven"]},
+        {"name": "C", "imgs": ["Dune"]},
+        {"name": "D", "imgs": ["The Hitchhiker's Guide to the Galaxy"]},
+        {"name": "E", "imgs": ["Foundation", "Animal Farm"]},
+        {"name": "F", "imgs": ["Lord of the Flies"]},
+        {"name": "EJ LÆST", "imgs": []}
+        ]
+    },
+    "Eve": {
+        "title": "Den Store Bogklub Tier List",
+        "rows": [
+        {"name": "S", "imgs": ["Hærværk"]},
+        {"name": "A", "imgs": ["Dune", "Animal Farm"]},
+        {"name": "B", "imgs": ["The Handmaid's Tale"]},
+        {"name": "C", "imgs": ["Slottet"]},
+        {"name": "D", "imgs": ["Babel", "The Hitchhiker's Guide to the Galaxy"]},
+        {"name": "E", "imgs": ["Lord of the Flies", "Seven Eleven"]},
+        {"name": "F", "imgs": ["Foundation"]},
+        {"name": "EJ LÆST", "imgs": []}
+        ]
+    }
+}

@@ -1,0 +1,185 @@
+body {
+	background: url(images/room.jpg) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+	font-family: sans-serif;
+	margin-left: 100px;
+	margin-right: 100px;
+
+    /* Set global image height variable */
+    --image-height: 70px;
+}
+
+.title {
+	color: #000000;
+	font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+	font-size: 38px;
+	user-select: none;
+	text-align: center;
+	margin-bottom: 20px;
+	min-height: 38px;
+}
+
+.title input {
+	display: none;
+	background: transparent;
+	border: 0px;
+	color: #000000;
+	font-size: 38px;
+}
+
+.title input:focus {
+	background: #666;
+}
+
+.main-content {
+	display: flex;
+	flex-flow: column;
+    min-width: 1200px;
+    max-width: 1200px;
+}
+
+section {
+	background-image: url("images/wood_dark.jpg");
+	background-size: cover;
+}
+
+/* .tierlist {
+	background-color: #2e2314;
+} */
+
+.tierlist span {
+	min-width: 100px;
+	min-height: var(--image-height);
+	display: flex;
+	align-items: center;
+	flex-flow: row;
+	font-size: 30px;
+	font-family: sans-serif;
+	border: 0;
+	padding: 0;
+}
+
+.tierlist div.row {
+	/* border: 0px solid #4d3b24; */
+	/* border-top-width: 1px; */
+	/* border-right-width: 1px; */
+	display: flex;
+	/* background-color: #5e4119; */
+	background-image: url("images/wood_darkest.jpg");
+	background-size: cover;
+	user-select: none;
+	margin: 10px 20px;
+}
+
+.tierlist div.row:first-child {
+	margin-top: 20px;
+}
+
+.tierlist div:last-child {
+	border-bottom-width: 1px !important;
+}
+
+.tierlist div.row:hover {
+	background-image: url("images/wood_darker.jpg");
+}
+
+span.header {
+	justify-content: center;
+	align-self: stretch;
+	cursor: pointer;
+	min-width: 100px;
+}
+
+span.header label {
+	cursor: pointer;
+    user-select: none;
+}
+
+span.header input[type=text] {
+	display: none;
+	height: 50px;
+	font-size: 30px;
+	text-align: center;
+}
+
+span.items {
+	display: flex;
+	flex-wrap: wrap;
+	flex-grow: 1;
+	justify-content: left;
+	pointer-events: none;
+	height: fit-content;
+}
+
+span.item {
+	pointer-events: auto;
+}	
+
+span.item-image {
+	min-width: auto;
+}
+
+.bottom-container .header {
+    background-color: #808485;
+}
+
+img.clickable {
+    position: absolute;
+	cursor: pointer;
+	/*width: ;*/
+	height: var(--image-height);
+    margin: 0 26px;
+}
+
+img.clickable:hover, .button:hover {
+	filter: brightness(0.6);
+}
+
+img.clickable:active, .button:active {
+	filter: brightness(0.4);
+}
+
+.bottom-container {
+	display: flex;
+	flex-flow: row;
+	align-items: center;
+	margin: 0 20px 20px 20px;
+}
+
+.bottom-container > div {
+	margin: 0;
+}
+
+.bottom-container span {
+	min-width: 100px;
+	min-height: var(--image-height);
+	display: flex;
+	align-items: center;
+	flex-flow: row;
+	font-size: 30px;
+	font-family: sans-serif;
+	border: 0;
+	padding: 0;
+}
+
+.button {
+	border: 1px solid #666;
+	height: var(--image-height);
+}
+
+.gh-link {
+	position: absolute;
+	top: 10px;
+    left: 10px;
+	color: #19107a;
+	text-decoration: none;
+}
+
+.hint {
+	font-style: italic;
+	font-size: small;
+	color: #000000;
+}
