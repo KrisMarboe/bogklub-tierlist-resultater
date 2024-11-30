@@ -47,35 +47,101 @@ let headers_orig_min_width;
 // DOM elems
 let images;
 let tierlist_div;
-let user_data;
-let book_data;
-
-async function readDataJson() {
-    const filePath = 'data/data.json';
-
-    try {
-        // Fetch the JSON data
-        const response = await fetch(filePath);
-        
-        if (!response.ok) {
-            throw new Error(`Failed to fetch the JSON file at ${filePath}. Status: ${response.status}`);
-        }
-
-        // Parse the JSON content
-        const data = await response.json();
-
-        // Log the JSON content
-        console.log('Data from JSON file:', data);
-
-        const book_data = compute_book_data(data);
-
-        return {data, book_data}; // Return the parsed data if further processing is needed
-    } catch (error) {
-        console.error('Error reading the JSON file:', error);
+let user_data = {
+    "Alice": {
+        "title": "Den Store Bogklub Tier List",
+        "rows": [
+        {"name": "S", "imgs": ["Dune"]},
+        {"name": "A", "imgs": ["Animal Farm"]},
+        {"name": "B", "imgs": ["Slottet", "Hærværk"]},
+        {"name": "C", "imgs": ["Babel"]},
+        {"name": "D", "imgs": ["The Hitchhiker's Guide to the Galaxy"]},
+        {"name": "E", "imgs": ["Lord of the Flies", "Foundation"]},
+        {"name": "F", "imgs": ["The Handmaid's Tale", "Seven Eleven"]},
+        {"name": "EJ LÆST", "imgs": []}
+        ]
+    },
+    "Bob": {
+        "title": "Den Store Bogklub Tier List",
+        "rows": [
+        {"name": "S", "imgs": ["Animal Farm", "Hærværk"]},
+        {"name": "A", "imgs": ["Dune"]},
+        {"name": "B", "imgs": ["The Hitchhiker's Guide to the Galaxy"]},
+        {"name": "C", "imgs": ["Slottet", "Foundation"]},
+        {"name": "D", "imgs": ["Seven Eleven"]},
+        {"name": "E", "imgs": ["The Handmaid's Tale", "Babel"]},
+        {"name": "F", "imgs": ["Lord of the Flies"]},
+        {"name": "EJ LÆST", "imgs": []}
+        ]
+    },
+    "Charlie": {
+        "title": "Den Store Bogklub Tier List",
+        "rows": [
+        {"name": "S", "imgs": ["The Hitchhiker's Guide to the Galaxy"]},
+        {"name": "A", "imgs": ["Hærværk", "Slottet"]},
+        {"name": "B", "imgs": ["Dune", "Foundation"]},
+        {"name": "C", "imgs": ["Animal Farm"]},
+        {"name": "D", "imgs": ["Lord of the Flies", "Babel"]},
+        {"name": "E", "imgs": ["Seven Eleven"]},
+        {"name": "F", "imgs": ["The Handmaid's Tale"]},
+        {"name": "EJ LÆST", "imgs": []}
+        ]
+    },
+    "Diana": {
+        "title": "Den Store Bogklub Tier List",
+        "rows": [
+        {"name": "S", "imgs": ["Slottet", "Babel"]},
+        {"name": "A", "imgs": ["The Handmaid's Tale"]},
+        {"name": "B", "imgs": ["Hærværk", "Seven Eleven"]},
+        {"name": "C", "imgs": ["Dune"]},
+        {"name": "D", "imgs": ["The Hitchhiker's Guide to the Galaxy"]},
+        {"name": "E", "imgs": ["Foundation", "Animal Farm"]},
+        {"name": "F", "imgs": ["Lord of the Flies"]},
+        {"name": "EJ LÆST", "imgs": []}
+        ]
+    },
+    "Eve": {
+        "title": "Den Store Bogklub Tier List",
+        "rows": [
+        {"name": "S", "imgs": ["Hærværk"]},
+        {"name": "A", "imgs": ["Dune", "Animal Farm"]},
+        {"name": "B", "imgs": ["The Handmaid's Tale"]},
+        {"name": "C", "imgs": ["Slottet"]},
+        {"name": "D", "imgs": ["Babel", "The Hitchhiker's Guide to the Galaxy"]},
+        {"name": "E", "imgs": ["Lord of the Flies", "Seven Eleven"]},
+        {"name": "F", "imgs": ["Foundation"]},
+        {"name": "EJ LÆST", "imgs": []}
+        ]
     }
 }
+let book_data;
 
-async function compute_book_data(data) {
+// async function readDataJson() {
+//     const filePath = 'data/data.json';
+
+//     try {
+//         // Fetch the JSON data
+//         const response = await fetch(filePath);
+        
+//         if (!response.ok) {
+//             throw new Error(`Failed to fetch the JSON file at ${filePath}. Status: ${response.status}`);
+//         }
+
+//         // Parse the JSON content
+//         const data = await response.json();
+
+//         // Log the JSON content
+//         console.log('Data from JSON file:', data);
+
+//         const book_data = compute_book_data(data);
+
+//         return {data, book_data}; // Return the parsed data if further processing is needed
+//     } catch (error) {
+//         console.error('Error reading the JSON file:', error);
+//     }
+// }
+
+function compute_book_data(data) {
     const bookData = {};
 
     // Iterate through each person in the input data
@@ -114,7 +180,9 @@ async function compute_book_data(data) {
 
 window.addEventListener('load', () => {
 	tierlist_div =  document.querySelector('.tierlist');
-    user_data, book_data = readDataJson();
+    // user_data, book_data = readDataJson();
+
+    book_data = compute_book_data(user_data);
 
 	for (let i = 0; i < DEFAULT_TIERS.length; ++i) {
 		add_row(i, DEFAULT_TIERS[i]);
@@ -138,6 +206,18 @@ window.addEventListener('load', () => {
 		images[file_names[i]] = img;
         document.body.appendChild(img);
 	}
+
+    document.getElementById('show_all_button').addEventListener('click', () => {
+        // Get values from images object with small delay in between
+        let img_values = Object.values(images);
+        let delay = 0;
+        img_values.forEach(img => {
+            setTimeout(() => {
+                img.click();
+            }, delay);
+            delay += 100;
+        });
+    })
 });
 
 function create_img_with_src(src, alt, top, width) {
@@ -150,7 +230,8 @@ function create_img_with_src(src, alt, top, width) {
 	img.classList.add('clickable');
 	img.clickable = true;
 	img.addEventListener('click', (evt) => {
-        const book_name = evt.target.alt;
+        let _img = evt.target;
+        const book_name = _img.alt;
         
         // Move image position to relative position according to book_data[book_name].mean
         // Use animation to move the image
@@ -158,10 +239,27 @@ function create_img_with_src(src, alt, top, width) {
         const mean = book_data[book_name].mean;
         const row = Math.floor(mean);
         const offset = mean - row;
-        const top = row * 70 + 20 + row * 10 + offset * (70 + 10);
-        evt.target.style.top = `${top}px`;
+        const new_top = row * 70 + 28 + row * 10 + offset * (70 + 10);
+        let old_top = parseInt(_img.style.top);
+
+        const delta = 10;
+
+        let interval = setInterval(() => {
+            if (old_top > new_top) {
+                old_top -= delta;
+                if (old_top < new_top) {
+                    old_top = new_top;
+                }
+            } else {
+                clearInterval(interval);
+            }
+            _img.style.top = `${old_top}px`;
+        }, 10);
 
         console.log(`Book: ${book_name}, Mean: ${mean}, Row: ${row}, Offset: ${offset}, Top: ${top}`);
+
+
+        _img.classList.add('shown');
 	});
 	
 	return img;
