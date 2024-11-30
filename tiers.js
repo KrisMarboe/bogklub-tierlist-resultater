@@ -150,7 +150,18 @@ function create_img_with_src(src, alt, top, width) {
 	img.classList.add('clickable');
 	img.clickable = true;
 	img.addEventListener('click', (evt) => {
-        console.log(evt.target.alt);
+        const book_name = evt.target.alt;
+        
+        // Move image position to relative position according to book_data[book_name].mean
+        // Use animation to move the image
+        // The top row is 0. Each row is 80px tall.
+        const mean = book_data[book_name].mean;
+        const row = Math.floor(mean);
+        const offset = mean - row;
+        const top = row * 70 + 20 + row * 10 + offset * (70 + 10);
+        evt.target.style.top = `${top}px`;
+
+        console.log(`Book: ${book_name}, Mean: ${mean}, Row: ${row}, Offset: ${offset}, Top: ${top}`);
 	});
 	
 	return img;
