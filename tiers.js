@@ -69,13 +69,13 @@ async function readDataJson() {
 
         const book_data = compute_book_data(data);
 
-        return data, book_data; // Return the parsed data if further processing is needed
+        return {data, book_data}; // Return the parsed data if further processing is needed
     } catch (error) {
         console.error('Error reading the JSON file:', error);
     }
 }
 
-function compute_book_data(user_data) {
+async function compute_book_data(user_data) {
     const bookData = {};
 
     // Iterate through each person in the input data
