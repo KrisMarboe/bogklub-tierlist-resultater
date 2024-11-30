@@ -76,7 +76,6 @@ async function readDataJson() {
 }
 
 async function compute_book_data(data) {
-    console.log('User Data Received:', data); // Debugging
     const bookData = {};
 
     // Iterate through each person in the input data
@@ -108,7 +107,7 @@ async function compute_book_data(data) {
         bookData[book].mean = meanValue;
     }
     
-    console.log(bookData);
+    console.log('Book data:', bookData);
 
     return bookData;
 }
@@ -130,13 +129,13 @@ window.addEventListener('load', () => {
 		"animal_farm", "babel", "dune", "foundation", "hærværk", "handmaids_tale", "lord_of_the_flies", "seven_eleven", "slottet", "the_hitchhikers_guide_to_the_galaxy"
 	]
 	var file_names = ["Animal Farm", "Babel", "Dune", "Foundation", "Hærværk", "The Handmaid's Tale", "Lord of the Flies", "Seven Eleven", "Slottet", "The Hitchhiker's Guide to the Galaxy"]
-	images = [];
+	images = {};
     let top = DEFAULT_TIERS.length * (70) + 28 + DEFAULT_TIERS.length * 10;
     let width = 20 + 100 + 30;
     for (var i in files) {
         width += 100;
 		let img = create_img_with_src(`books/${files[i]}.jpg`, file_names[i], top, width);
-		images.push(img);
+		images[file_names[i]] = img;
         document.body.appendChild(img);
 	}
 });
@@ -151,7 +150,7 @@ function create_img_with_src(src, alt, top, width) {
 	img.classList.add('clickable');
 	img.clickable = true;
 	img.addEventListener('click', (evt) => {
-        console.log(img.alt);
+        console.log(evt.target.alt);
 	});
 	
 	return img;
