@@ -67,7 +67,9 @@ async function readDataJson() {
         // Log the JSON content
         console.log('Data from JSON file:', data);
 
-        return data; // Return the parsed data if further processing is needed
+        const book_data = compute_book_data(data);
+
+        return data, book_data; // Return the parsed data if further processing is needed
     } catch (error) {
         console.error('Error reading the JSON file:', error);
     }
@@ -110,8 +112,7 @@ function compute_book_data(user_data) {
 
 window.addEventListener('load', () => {
 	tierlist_div =  document.querySelector('.tierlist');
-    user_data = readDataJson();
-    book_data = compute_book_data(user_data);
+    user_data, book_data = readDataJson();
     console.log(book_data);
 
 	for (let i = 0; i < DEFAULT_TIERS.length; ++i) {
