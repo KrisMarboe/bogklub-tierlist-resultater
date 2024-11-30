@@ -75,12 +75,13 @@ async function readDataJson() {
     }
 }
 
-async function compute_book_data(user_data) {
+async function compute_book_data(data) {
+    console.log('User Data Received:', data); // Debugging
     const bookData = {};
 
     // Iterate through each person in the input data
-    for (const person in user_data) {
-        const rows = user_data[person].rows;
+    for (const person in data) {
+        const rows = data[person].rows;
 
         // Iterate through each tier and its books
         rows.forEach(row => {
