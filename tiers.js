@@ -37,7 +37,7 @@ const TIER_COLORS = [
 ];
 
 let unique_id = 0;
-
+let top_margin;
 let unsaved_changes = false;
 
 // Contains [[header, input, label]]
@@ -157,7 +157,6 @@ function compute_book_data(data) {
 
 window.addEventListener('load', () => {
 	tierlist_div =  document.querySelector('.tierlist');
-
     book_data = compute_book_data(user_data);
 
 	for (let i = 0; i < DEFAULT_TIERS.length; ++i) {
@@ -167,6 +166,9 @@ window.addEventListener('load', () => {
 
 	headers_orig_min_width = all_headers[0][0].clientWidth;
 
+    top_margin = window.innerHeight - ((DEFAULT_TIERS.length + 1) * (70) + DEFAULT_TIERS.length * 10 + 100);
+    document.body.style.marginTop = `${top_margin}px`;
+
 	// load jpg images from /books folder and add them to the untiered_images
 	
 	var files = [
@@ -175,7 +177,7 @@ window.addEventListener('load', () => {
 	var file_names = ["Animal Farm", "Babel", "Dune", "Foundation", "Hærværk", "The Handmaid's Tale", "Lord of the Flies", "Seven Eleven", "Slottet", "The Hitchhiker's Guide to the Galaxy"]
 	votes = {};
     images = {};
-    let top = DEFAULT_TIERS.length * (70) + 28 + DEFAULT_TIERS.length * 10;
+    let top = top_margin + DEFAULT_TIERS.length * (70) + 20 + DEFAULT_TIERS.length * 10;
     let left = 20 + 100 + 30;
     for (var i in files) {
         left += 100;
@@ -206,7 +208,7 @@ function create_book_vote_icons(book_name, left, index) {
     let values = book_data[book_name].values;
     for (const person in values) {
         const tier = values[person];
-        const top = tier * 70 + 28 + tier * 10 + 25;
+        const top = top_margin + tier * 70 + 20 + tier * 10 + 25;
         if (!icons[tier]) {
             // Create label for this icon
             let label = document.createElement('div');
@@ -288,7 +290,7 @@ function create_img_with_src(src, alt, top, left) {
         const row = Math.floor(mean);
         const offset = mean - row;
         let mean_label = document.createElement('div');
-        const new_top = row * 70 + row * 10 + offset * (70 + 10);
+        const new_top = top_margin + row * 70 + row * 10 + offset * (70 + 10) - 8;
         mean_label.style.top = `${new_top}px`;
         mean_label.style.left = `${left+33}px`;
         mean_label.style.position = 'absolute';
@@ -326,8 +328,10 @@ function create_img_with_src(src, alt, top, left) {
         const mean = book_data[book_name].mean;
         const row = Math.floor(mean);
         const offset = mean - row;
-        const new_top = row * 70 + 28 + row * 10 + offset * (70 + 10);
+        const new_top = top_margin + row * 70 + 20 + row * 10 + offset * (70 + 10);
         let old_top = parseInt(_img.style.top);
+
+        console.log(`New top: ${new_top}, Old top: ${old_top}`);
 
         const delta = 10;
 
