@@ -89,12 +89,10 @@ section {
 span.header {
 	justify-content: center;
 	align-self: stretch;
-	cursor: pointer;
 	min-width: 100px;
 }
 
 span.header label {
-	cursor: pointer;
     user-select: none;
 }
 
@@ -126,19 +124,22 @@ span.item-image {
     background-color: #808485;
 }
 
-img.clickable {
+img {
     position: absolute;
-	cursor: pointer;
 	/*width: ;*/
 	height: var(--image-height);
     margin: 0 26px;
 }
 
-img.clickable:hover, .button:hover {
+.button {
+	cursor: pointer;
+}
+
+.button:hover {
 	filter: brightness(0.6);
 }
 
-img.clickable:active, .button:active {
+.button:active {
 	filter: brightness(0.4);
 }
 
@@ -168,6 +169,10 @@ img.clickable:active, .button:active {
 .button {
 	border: 1px solid #666;
 	height: var(--image-height);
+}
+
+.bottom-container > span > label {
+	cursor: pointer;
 }
 
 .gh-link {

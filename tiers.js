@@ -46,9 +46,10 @@ let headers_orig_min_width;
 
 // DOM elems
 let images;
+let votes;
 let tierlist_div;
 let user_data = {
-    "Alice": {
+    "U2FsdGVkX18/wd8LYcMm+fWmZa7isqYgT7B7r1Gbe/g=": {
         "title": "Den Store Bogklub Tier List",
         "rows": [
         {"name": "S", "imgs": ["Dune"]},
@@ -61,7 +62,7 @@ let user_data = {
         {"name": "EJ LÆST", "imgs": []}
         ]
     },
-    "Bob": {
+    "U2FsdGVkX19AbXXVktYb0qUhUDxNW5q2VfUkmWppous=": {
         "title": "Den Store Bogklub Tier List",
         "rows": [
         {"name": "S", "imgs": ["Animal Farm", "Hærværk"]},
@@ -74,7 +75,7 @@ let user_data = {
         {"name": "EJ LÆST", "imgs": []}
         ]
     },
-    "Charlie": {
+    "U2FsdGVkX19S3jzwo+BDdvXxQnHJfe21IaJbKolkBCc=": {
         "title": "Den Store Bogklub Tier List",
         "rows": [
         {"name": "S", "imgs": ["The Hitchhiker's Guide to the Galaxy"]},
@@ -87,7 +88,7 @@ let user_data = {
         {"name": "EJ LÆST", "imgs": []}
         ]
     },
-    "Diana": {
+    "U2FsdGVkX1+yVNixkQ4hQ0xzB2+ZVYtmETHW+suhxKM=": {
         "title": "Den Store Bogklub Tier List",
         "rows": [
         {"name": "S", "imgs": ["Slottet", "Babel"]},
@@ -100,7 +101,7 @@ let user_data = {
         {"name": "EJ LÆST", "imgs": []}
         ]
     },
-    "Eve": {
+    "U2FsdGVkX1+Ta+bSzl6S383FTn+v+EG9RvwT2xGj7w4=": {
         "title": "Den Store Bogklub Tier List",
         "rows": [
         {"name": "S", "imgs": ["Hærværk"]},
@@ -116,37 +117,13 @@ let user_data = {
 }
 let book_data;
 
-// async function readDataJson() {
-//     const filePath = 'data/data.json';
-
-//     try {
-//         // Fetch the JSON data
-//         const response = await fetch(filePath);
-        
-//         if (!response.ok) {
-//             throw new Error(`Failed to fetch the JSON file at ${filePath}. Status: ${response.status}`);
-//         }
-
-//         // Parse the JSON content
-//         const data = await response.json();
-
-//         // Log the JSON content
-//         console.log('Data from JSON file:', data);
-
-//         const book_data = compute_book_data(data);
-
-//         return {data, book_data}; // Return the parsed data if further processing is needed
-//     } catch (error) {
-//         console.error('Error reading the JSON file:', error);
-//     }
-// }
-
 function compute_book_data(data) {
     const bookData = {};
 
     // Iterate through each person in the input data
-    for (const person in data) {
-        const rows = data[person].rows;
+    for (const person_key in data) {
+        const person = CryptoJS.AES.decrypt(person_key, 'rotte').toString(CryptoJS.enc.Utf8);
+        const rows = data[person_key].rows;
 
         // Iterate through each tier and its books
         rows.forEach(row => {
@@ -180,7 +157,6 @@ function compute_book_data(data) {
 
 window.addEventListener('load', () => {
 	tierlist_div =  document.querySelector('.tierlist');
-    // user_data, book_data = readDataJson();
 
     book_data = compute_book_data(user_data);
 
@@ -197,14 +173,18 @@ window.addEventListener('load', () => {
 		"animal_farm", "babel", "dune", "foundation", "hærværk", "handmaids_tale", "lord_of_the_flies", "seven_eleven", "slottet", "the_hitchhikers_guide_to_the_galaxy"
 	]
 	var file_names = ["Animal Farm", "Babel", "Dune", "Foundation", "Hærværk", "The Handmaid's Tale", "Lord of the Flies", "Seven Eleven", "Slottet", "The Hitchhiker's Guide to the Galaxy"]
-	images = {};
+	votes = {};
+    images = {};
     let top = DEFAULT_TIERS.length * (70) + 28 + DEFAULT_TIERS.length * 10;
-    let width = 20 + 100 + 30;
+    let left = 20 + 100 + 30;
     for (var i in files) {
-        width += 100;
-		let img = create_img_with_src(`books/${files[i]}.jpg`, file_names[i], top, width);
-		images[file_names[i]] = img;
+        left += 100;
+		let img = create_img_with_src(`books/${files[i]}.jpg`, file_names[i], top, left);
+        images[file_names[i]] = img;
         document.body.appendChild(img);
+
+        let icons = create_book_vote_icons(file_names[i], left, i);
+        votes[file_names[i]] = icons;
 	}
 
     document.getElementById('show_all_button').addEventListener('click', () => {
@@ -215,22 +195,129 @@ window.addEventListener('load', () => {
             setTimeout(() => {
                 img.click();
             }, delay);
-            delay += 100;
+            delay += 200;
         });
     })
 });
 
-function create_img_with_src(src, alt, top, width) {
+function create_book_vote_icons(book_name, left, index) {
+    // Create small icon for each vote inside book_data[book_name].values
+    let icons = {};
+    let values = book_data[book_name].values;
+    for (const person in values) {
+        const tier = values[person];
+        const top = tier * 70 + 28 + tier * 10 + 25;
+        if (!icons[tier]) {
+            // Create label for this icon
+            let label = document.createElement('div');
+            label.style.top = `${top}px`;
+            label.style.left = `${left+65}px`;
+            label.style.position = 'absolute';
+            label.style.textAlign = 'center';
+            label.style.lineHeight = '20px';
+            label.style.fontSize = '12px';
+            label.style.visibility = 'hidden';
+            label.style.backgroundColor = 'white';
+            label.style.border = '1px solid black';
+            label.style.borderRadius = '5px';
+            label.style.padding = '2px';
+            label.style.opacity = 0.7;
+            label.style.color = 'black';
+
+
+            // Create new icon for this tier
+            let icon = document.createElement('div');
+            icon.style.top = `${top}px`;
+            icon.style.left = `${left+35}px`;
+            icon.style.position = 'absolute';
+            icon.style.width = '20px';
+            icon.style.height = '20px';
+            icon.style.border = '1px solid black';
+            icon.style.borderRadius = '50%';
+            icon.style.textAlign = 'center';
+            icon.style.lineHeight = '20px';
+            icon.style.backgroundColor = 'white'; // (index % 2 === 0) ? 'white' : 'black';
+            icon.style.opacity = 0.7;
+            icon.style.color = 'black'; // (index % 2 === 0) ? 'black' : 'white';
+            icon.style.fontSize = '12px';
+            icon.style.visibility = 'hidden';
+            icon.style.userSelect = 'none';
+
+            // Display label on hover
+            icon.addEventListener('mouseover', () => {
+                label.style.visibility = 'visible';
+            });
+            icon.addEventListener('mouseout', () => {
+                label.style.visibility = 'hidden';
+            });
+
+            icons[tier] = {
+                count: 0,
+                people: [],
+                icon_element: icon,
+                label_element: label
+            };
+        }
+        icons[tier].count++;
+        icons[tier].people.push(person);
+        const icon = icons[tier].icon_element;
+        icon.innerHTML = icons[tier].count;
+        const label = icons[tier].label_element;
+        label.innerHTML = icons[tier].people.join('<br>');
+        document.body.appendChild(icon);
+        document.body.appendChild(label);
+    }
+    return icons;
+}
+
+function create_img_with_src(src, alt, top, left) {
 	let img = document.createElement('img');
 	img.src = src;
 	img.alt = alt;
     img.style.top = `${top}px`;
-    img.style.left = `${width}px`;
+    img.style.left = `${left}px`;
 	img.style.userSelect = 'none';
-	img.classList.add('clickable');
-	img.clickable = true;
+	img.classList.add('button');
+
+    img.addEventListener('mouseover', (evt) => {
+        let _img = evt.target;
+        if (_img.classList.contains('button')) return;
+
+        // Show mean value for this book on hover
+        const mean = book_data[_img.alt].mean;
+        const row = Math.floor(mean);
+        const offset = mean - row;
+        let mean_label = document.createElement('div');
+        const new_top = row * 70 + row * 10 + offset * (70 + 10);
+        mean_label.style.top = `${new_top}px`;
+        mean_label.style.left = `${left+33}px`;
+        mean_label.style.position = 'absolute';
+        mean_label.style.textAlign = 'center';
+        mean_label.style.lineHeight = '20px';
+        mean_label.style.fontSize = '12px';
+        mean_label.style.backgroundColor = 'white';
+        mean_label.style.border = '1px solid black';
+        mean_label.style.borderRadius = '5px';
+        mean_label.style.padding = '2px';
+        mean_label.style.opacity = 0.9;
+        mean_label.style.color = 'black';
+        mean_label.innerHTML = mean.toFixed(2);
+        mean_label.id = `mean_${_img.alt}`;
+        document.body.appendChild(mean_label);
+    });
+    img.addEventListener('mouseout', (evt) => {
+        let _img = evt.target;
+        if (_img.classList.contains('button')) return;
+
+        // Hide mean value for this book on hover
+        let mean_label = document.getElementById(`mean_${_img.alt}`);
+        mean_label.remove();
+    });
+
 	img.addEventListener('click', (evt) => {
         let _img = evt.target;
+        if (!_img.classList.contains('button')) return;
+
         const book_name = _img.alt;
         
         // Move image position to relative position according to book_data[book_name].mean
@@ -251,15 +338,21 @@ function create_img_with_src(src, alt, top, width) {
                     old_top = new_top;
                 }
             } else {
+                // Show vote icons for this book after moving the image
+                let icons = votes[book_name];
+                for (const tier in icons) {
+                    const icon = icons[tier].icon_element;
+                    icon.style.visibility = 'visible';
+                };
                 clearInterval(interval);
             }
             _img.style.top = `${old_top}px`;
-        }, 10);
+        }, 17);
 
         console.log(`Book: ${book_name}, Mean: ${mean}, Row: ${row}, Offset: ${offset}, Top: ${top}`);
 
 
-        _img.classList.add('shown');
+        _img.classList.remove('button');
 	});
 	
 	return img;
