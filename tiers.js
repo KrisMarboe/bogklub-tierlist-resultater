@@ -122,7 +122,7 @@ function compute_book_data(data) {
 
     // Iterate through each person in the input data
     for (const person_key in data) {
-        const person = CryptoJS.AES.decrypt(person_key, 'rotte').toString(CryptoJS.enc.Utf8);
+        const person = decrypt_name(person_key);
         const rows = data[person_key].rows;
 
         // Iterate through each tier and its books
@@ -178,7 +178,7 @@ window.addEventListener('load', () => {
 	votes = {};
     images = {};
     let top = top_margin + DEFAULT_TIERS.length * (70) + 20 + DEFAULT_TIERS.length * 10;
-    let left = 20 + 100 + 30;
+    let left = 20 + 100 + 70;
     for (var i in files) {
         left += 100;
 		let img = create_img_with_src(`books/${files[i]}.jpg`, file_names[i], top, left);
@@ -188,6 +188,62 @@ window.addEventListener('load', () => {
         let icons = create_book_vote_icons(file_names[i], left, i);
         votes[file_names[i]] = icons;
 	}
+
+    // Add name butoons to display what a person has voted
+    let name_top = top_margin + 40;
+    let name_left = 10;
+
+    let button = document.createElement('span');
+    button.style.top = `${top_margin}px`;
+    button.style.left = `${name_left}px`;
+    button.style.position = 'absolute';
+    button.classList.add('span-button');
+    button.innerHTML = "Clear";
+    button.addEventListener('click', () => {
+        for (const book in votes) {
+            const icons = votes[book];
+            for (const tier in icons) {
+                const icon = icons[tier].icon_element;
+                icon.style.backgroundColor = 'white';
+                icon.style.oppacity = 0.7;
+            }
+        };
+    });
+    document.body.appendChild(button);
+    let names = Object.keys(user_data);
+    names.forEach(name_key => {
+        let name = decrypt_name(name_key);
+        button = document.createElement('span');
+        button.style.top = `${name_top}px`;
+        button.style.left = `${name_left}px`;
+        button.style.position = 'absolute';
+        button.classList.add('span-button');
+        button.innerHTML = name;
+        button.addEventListener('click', () => {
+            // Go through vote icons and change color of background for this person
+            let person = user_data[name_key];
+            person.rows.forEach(row => {
+                let tier = row.name;
+                let imgs = row.imgs;
+                imgs.forEach(img_name => {
+                    let icons = votes[img_name];
+                    let tier_value = TIER_VALUES[tier];
+                    for (const tier in icons) {
+                        const icon = icons[tier].icon_element;
+                        if (tier_value === parseInt(tier)) {
+                            icon.style.backgroundColor = 'orange';
+                            icon.style.oppacity = 1;
+                        } else {
+                            icon.style.backgroundColor = 'white';
+                            icon.style.oppacity = 0.7;
+                        }
+                    }
+                });
+            });
+        });
+        document.body.appendChild(button);
+        name_top += 20;
+    });
 
     document.getElementById('show_all_button').addEventListener('click', () => {
         // Get values from images object with small delay in between
@@ -199,8 +255,47 @@ window.addEventListener('load', () => {
             }, delay);
             delay += 200;
         });
-    })
+    });
+    
+    document.getElementById('sortering').addEventListener('click', () => {
+        let img_values = Object.values(images);
+        img_values.sort((a, b) => {
+            return book_data[a.alt].mean - book_data[b.alt].mean;
+        });
+        // Shift images and vote icons left and right according to the new order
+        let left = 20 + 100 + 70;
+        img_values.forEach(img => {
+            left += 100;
+            // Move image by animation
+            let old_left = parseInt(img.style.left);
+            let new_left = left;
+            let delta = 10 * (new_left - old_left) / Math.abs(new_left - old_left);
+            let interval = setInterval(() => {
+                if (Math.abs(old_left - new_left) >= Math.abs(delta)) {
+                    old_left += delta;
+                    if (Math.abs(old_left - new_left) < Math.abs(delta)) {
+                        old_left = new_left;
+                    }
+                    img.style.left = `${old_left}px`;
+                    // Move vote icons for this book
+                    let icons = votes[img.alt];
+                    for (const tier in icons) {
+                        const icon = icons[tier].icon_element;
+                        const label = icons[tier].label_element;
+                        icon.style.left = `${old_left}px`;
+                        label.style.left = `${old_left+14}px`;
+                    }
+                } else {
+                    clearInterval(interval);
+                }
+            }, 17);
+        });
+    });
 });
+
+function decrypt_name(name) {
+    return CryptoJS.AES.decrypt(name, 'rotte').toString(CryptoJS.enc.Utf8);
+}
 
 function create_book_vote_icons(book_name, left, index) {
     // Create small icon for each vote inside book_data[book_name].values
@@ -213,7 +308,7 @@ function create_book_vote_icons(book_name, left, index) {
             // Create label for this icon
             let label = document.createElement('div');
             label.style.top = `${top}px`;
-            label.style.left = `${left+65}px`;
+            label.style.left = `${left+14}px`;
             label.style.position = 'absolute';
             label.style.textAlign = 'center';
             label.style.lineHeight = '20px';
@@ -230,13 +325,14 @@ function create_book_vote_icons(book_name, left, index) {
             // Create new icon for this tier
             let icon = document.createElement('div');
             icon.style.top = `${top}px`;
-            icon.style.left = `${left+35}px`;
+            icon.style.left = `${left}px`;
             icon.style.position = 'absolute';
             icon.style.width = '20px';
             icon.style.height = '20px';
             icon.style.border = '1px solid black';
             icon.style.borderRadius = '50%';
             icon.style.textAlign = 'center';
+            icon.style.transform = 'translate(-50%, 0%)';
             icon.style.lineHeight = '20px';
             icon.style.backgroundColor = 'white'; // (index % 2 === 0) ? 'white' : 'black';
             icon.style.opacity = 0.7;
@@ -291,10 +387,12 @@ function create_img_with_src(src, alt, top, left) {
         const offset = mean - row;
         let mean_label = document.createElement('div');
         const new_top = top_margin + row * 70 + row * 10 + offset * (70 + 10) - 8;
+        const left = parseInt(_img.style.left);
         mean_label.style.top = `${new_top}px`;
-        mean_label.style.left = `${left+33}px`;
+        mean_label.style.left = `${left}px`;
         mean_label.style.position = 'absolute';
         mean_label.style.textAlign = 'center';
+        mean_label.style.transform = 'translate(-50%, 0%)';
         mean_label.style.lineHeight = '20px';
         mean_label.style.fontSize = '12px';
         mean_label.style.backgroundColor = 'white';
@@ -331,8 +429,6 @@ function create_img_with_src(src, alt, top, left) {
         const new_top = top_margin + row * 70 + 20 + row * 10 + offset * (70 + 10);
         let old_top = parseInt(_img.style.top);
 
-        console.log(`New top: ${new_top}, Old top: ${old_top}`);
-
         const delta = 10;
 
         let interval = setInterval(() => {
@@ -352,9 +448,6 @@ function create_img_with_src(src, alt, top, left) {
             }
             _img.style.top = `${old_top}px`;
         }, 17);
-
-        console.log(`Book: ${book_name}, Mean: ${mean}, Row: ${row}, Offset: ${offset}, Top: ${top}`);
-
 
         _img.classList.remove('button');
 	});

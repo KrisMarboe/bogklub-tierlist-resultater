@@ -128,7 +128,7 @@ img {
     position: absolute;
 	/*width: ;*/
 	height: var(--image-height);
-    margin: 0 26px;
+	transform: translate(-50%, 0%);
 }
 
 .button {
@@ -183,8 +183,11 @@ img {
 	text-decoration: none;
 }
 
-.hint {
-	font-style: italic;
-	font-size: small;
-	color: #000000;
+.span-button {
+	position: absolute;
+	top: 40px;
+	left: 10px;
+	color: #19107a;
+	text-decoration: none;
+	cursor: pointer;
 }
