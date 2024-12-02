@@ -116,6 +116,8 @@ let user_data = {
     }
 }
 let book_data;
+let ascending_book_order;
+let next_reveal_index;
 
 function compute_book_data(data) {
     const bookData = {};
@@ -150,12 +152,16 @@ function compute_book_data(data) {
         bookData[book].mean = meanValue;
     }
     
+    // Sort books by mean value
+    ascending_book_order = Object.keys(bookData).sort((a, b) => bookData[b].mean - bookData[a].mean);
+
     console.log('Book data:', bookData);
 
     return bookData;
 }
 
 window.addEventListener('load', () => {
+    next_reveal_index = 0;
 	tierlist_div =  document.querySelector('.tierlist');
     book_data = compute_book_data(user_data);
 
@@ -166,15 +172,15 @@ window.addEventListener('load', () => {
 
 	headers_orig_min_width = all_headers[0][0].clientWidth;
 
-    top_margin = window.innerHeight - ((DEFAULT_TIERS.length + 1) * (70) + DEFAULT_TIERS.length * 10 + 100);
+    top_margin = Math.max(20, window.innerHeight - ((DEFAULT_TIERS.length + 1) * (70) + DEFAULT_TIERS.length * 10 + 100));
     document.body.style.marginTop = `${top_margin}px`;
 
 	// load jpg images from /books folder and add them to the untiered_images
 	
 	var files = [
-		"animal_farm", "babel", "dune", "foundation", "hærværk", "handmaids_tale", "lord_of_the_flies", "seven_eleven", "slottet", "the_hitchhikers_guide_to_the_galaxy"
+		"animal_farm", "babel", "dune", "foundation", "handmaids_tale", "hærværk", "lord_of_the_flies", "seven_eleven", "slottet", "the_hitchhikers_guide_to_the_galaxy"
 	]
-	var file_names = ["Animal Farm", "Babel", "Dune", "Foundation", "Hærværk", "The Handmaid's Tale", "Lord of the Flies", "Seven Eleven", "Slottet", "The Hitchhiker's Guide to the Galaxy"]
+	var file_names = ["Animal Farm", "Babel", "Dune", "Foundation", "The Handmaid's Tale", "Hærværk", "Lord of the Flies", "Seven Eleven", "Slottet", "The Hitchhiker's Guide to the Galaxy"]
 	votes = {};
     images = {};
     let top = top_margin + DEFAULT_TIERS.length * (70) + 20 + DEFAULT_TIERS.length * 10;
@@ -190,11 +196,12 @@ window.addEventListener('load', () => {
 	}
 
     // Add name butoons to display what a person has voted
-    let name_top = top_margin + 40;
+    console.log(top_margin);
+    let name_top = top_margin + 120;
     let name_left = 10;
 
     let button = document.createElement('span');
-    button.style.top = `${top_margin}px`;
+    button.style.top = `${name_top - 30}px`;
     button.style.left = `${name_left}px`;
     button.style.position = 'absolute';
     button.classList.add('span-button');
@@ -207,7 +214,7 @@ window.addEventListener('load', () => {
                 icon.style.backgroundColor = 'white';
                 icon.style.oppacity = 0.7;
             }
-        };
+        }
     });
     document.body.appendChild(button);
     let names = Object.keys(user_data);
@@ -231,30 +238,28 @@ window.addEventListener('load', () => {
                     for (const tier in icons) {
                         const icon = icons[tier].icon_element;
                         if (tier_value === parseInt(tier)) {
-                            icon.style.backgroundColor = 'orange';
-                            icon.style.oppacity = 1;
+                            icon.style.backgroundColor = (tier_value > book_data[img_name].mean) ? 'red' : 'green';
+                            icon.style.oppacity = 0.9;
                         } else {
                             icon.style.backgroundColor = 'white';
                             icon.style.oppacity = 0.7;
                         }
                     }
-                });
-            });
+                })
+            })
         });
         document.body.appendChild(button);
         name_top += 20;
     });
 
-    document.getElementById('show_all_button').addEventListener('click', () => {
-        // Get values from images object with small delay in between
-        let img_values = Object.values(images);
-        let delay = 0;
-        img_values.forEach(img => {
-            setTimeout(() => {
-                img.click();
-            }, delay);
-            delay += 200;
-        });
+    document.getElementById('reveal_button').addEventListener('click', (e) => {
+        if (next_reveal_index >= ascending_book_order.length) return;
+
+        console.log(next_reveal_index, ascending_book_order[next_reveal_index]);
+        const next_image = images[ascending_book_order[next_reveal_index]];
+        next_image.click();
+        next_reveal_index++;
+        e.preventDefault();
     });
     
     document.getElementById('sortering').addEventListener('click', () => {
@@ -290,6 +295,17 @@ window.addEventListener('load', () => {
                 }
             }, 17);
         });
+    });
+
+    document.addEventListener('keydown', (e) => {
+        // If the key is a number, focus on the corresponding person button
+        if (e.key >= '0' && e.key <= '9') {
+            let idx = parseInt(e.key);
+            let buttons = document.querySelectorAll('.span-button');
+            if (idx <= (buttons.length-2)) {
+                buttons[idx+1].click();
+            }
+        }
     });
 });
 
