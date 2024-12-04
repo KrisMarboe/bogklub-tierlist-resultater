@@ -49,71 +49,92 @@ let images;
 let votes;
 let tierlist_div;
 let user_data = {
-    "U2FsdGVkX18/wd8LYcMm+fWmZa7isqYgT7B7r1Gbe/g=": {
-        "title": "Den Store Bogklub Tier List",
-        "rows": [
-        {"name": "S", "imgs": ["Dune"]},
-        {"name": "A", "imgs": ["Animal Farm"]},
-        {"name": "B", "imgs": ["Slottet", "Hærværk"]},
-        {"name": "C", "imgs": ["Babel"]},
-        {"name": "D", "imgs": ["The Hitchhiker's Guide to the Galaxy"]},
-        {"name": "E", "imgs": ["Lord of the Flies", "Foundation"]},
-        {"name": "F", "imgs": ["The Handmaid's Tale", "Seven Eleven"]},
-        {"name": "EJ LÆST", "imgs": []}
-        ]
-    },
-    "U2FsdGVkX19AbXXVktYb0qUhUDxNW5q2VfUkmWppous=": {
-        "title": "Den Store Bogklub Tier List",
-        "rows": [
-        {"name": "S", "imgs": ["Animal Farm", "Hærværk"]},
-        {"name": "A", "imgs": ["Dune"]},
-        {"name": "B", "imgs": ["The Hitchhiker's Guide to the Galaxy"]},
-        {"name": "C", "imgs": ["Slottet", "Foundation"]},
-        {"name": "D", "imgs": ["Seven Eleven"]},
-        {"name": "E", "imgs": ["The Handmaid's Tale", "Babel"]},
-        {"name": "F", "imgs": ["Lord of the Flies"]},
-        {"name": "EJ LÆST", "imgs": []}
-        ]
-    },
-    "U2FsdGVkX19S3jzwo+BDdvXxQnHJfe21IaJbKolkBCc=": {
-        "title": "Den Store Bogklub Tier List",
-        "rows": [
-        {"name": "S", "imgs": ["The Hitchhiker's Guide to the Galaxy"]},
-        {"name": "A", "imgs": ["Hærværk", "Slottet"]},
-        {"name": "B", "imgs": ["Dune", "Foundation"]},
-        {"name": "C", "imgs": ["Animal Farm"]},
-        {"name": "D", "imgs": ["Lord of the Flies", "Babel"]},
-        {"name": "E", "imgs": ["Seven Eleven"]},
-        {"name": "F", "imgs": ["The Handmaid's Tale"]},
-        {"name": "EJ LÆST", "imgs": []}
-        ]
-    },
-    "U2FsdGVkX1+yVNixkQ4hQ0xzB2+ZVYtmETHW+suhxKM=": {
-        "title": "Den Store Bogklub Tier List",
-        "rows": [
-        {"name": "S", "imgs": ["Slottet", "Babel"]},
-        {"name": "A", "imgs": ["The Handmaid's Tale"]},
-        {"name": "B", "imgs": ["Hærværk", "Seven Eleven"]},
-        {"name": "C", "imgs": ["Dune"]},
-        {"name": "D", "imgs": ["The Hitchhiker's Guide to the Galaxy"]},
-        {"name": "E", "imgs": ["Foundation", "Animal Farm"]},
-        {"name": "F", "imgs": ["Lord of the Flies"]},
-        {"name": "EJ LÆST", "imgs": []}
-        ]
-    },
-    "U2FsdGVkX1+Ta+bSzl6S383FTn+v+EG9RvwT2xGj7w4=": {
-        "title": "Den Store Bogklub Tier List",
-        "rows": [
-        {"name": "S", "imgs": ["Hærværk"]},
-        {"name": "A", "imgs": ["Dune", "Animal Farm"]},
-        {"name": "B", "imgs": ["The Handmaid's Tale"]},
-        {"name": "C", "imgs": ["Slottet"]},
-        {"name": "D", "imgs": ["Babel", "The Hitchhiker's Guide to the Galaxy"]},
-        {"name": "E", "imgs": ["Lord of the Flies", "Seven Eleven"]},
-        {"name": "F", "imgs": ["Foundation"]},
-        {"name": "EJ LÆST", "imgs": []}
-        ]
-    }
+    "U2FsdGVkX1+co+1hofpoOFIZCKe5p+VgWcHRfd1mChw=":
+        {"title":"Den Store Bogklub Tier List","rows":[{"name":"S","imgs":["Lord of the Flies"]},{"name":"A","imgs":["Animal Farm","The Handmaid's Tale"]},{"name":"B","imgs":["Babel","Foundation","Seven Eleven","Hærværk"]},{"name":"C","imgs":[]},{"name":"D","imgs":[]},{"name":"E","imgs":[]},{"name":"F","imgs":[]},{"name":"EJ LÆST","imgs":["Dune","Slottet","The Hitchhiker's Guide to the Galaxy"]}]},
+    "U2FsdGVkX1+mwJKqcRFbHEsZtWRiChimNTznLyFBkDA=": 
+        {"title":"Den Store Bogklub Tier List","rows":[{"name":"S","imgs":["The Hitchhiker's Guide to the Galaxy"]},{"name":"A","imgs":["Babel"]},{"name":"B","imgs":["Foundation"]},{"name":"C","imgs":[]},{"name":"D","imgs":[]},{"name":"E","imgs":[]},{"name":"F","imgs":["Hærværk","Seven Eleven"]},{"name":"EJ LÆST","imgs":["Animal Farm","Dune","Lord of the Flies","Slottet","The Handmaid's Tale"]}]},
+    "U2FsdGVkX1/Bh7ohtU1+r3ALYjz+KoQHrpdhBCKeF3U=":
+        {"title":"Den Store Bogklub Tier List","rows":[{"name":"S","imgs":["Dune","Hærværk"]},{"name":"A","imgs":["Slottet"]},{"name":"B","imgs":["Babel"]},{"name":"C","imgs":["Lord of the Flies","Animal Farm","The Handmaid's Tale"]},{"name":"D","imgs":["Seven Eleven"]},{"name":"E","imgs":["The Hitchhiker's Guide to the Galaxy","Foundation"]},{"name":"F","imgs":[]},{"name":"EJ LÆST","imgs":[]}]},
+    "U2FsdGVkX19vDurWXSqUtG2xGl8euoVpo80KNIK1tpg=":
+        {"title":"Den Store Bogklub Tier List","rows":[{"name":"S","imgs":[]},{"name":"A","imgs":["Babel"]},{"name":"B","imgs":[]},{"name":"C","imgs":[]},{"name":"D","imgs":[]},{"name":"E","imgs":[]},{"name":"F","imgs":[]},{"name":"EJ LÆST","imgs":["Animal Farm","Foundation","Dune","The Handmaid's Tale","Lord of the Flies","The Hitchhiker's Guide to the Galaxy","Slottet","Seven Eleven","Hærværk"]}]},
+    "U2FsdGVkX19SXtE+LIOscLQ55NM0pKS7j9/Jfs+SQ84=":
+        {"title":"Den Store Bogklub Tier List","rows":[{"name":"S","imgs":["The Hitchhiker's Guide to the Galaxy","Dune"]},{"name":"A","imgs":["Lord of the Flies"]},{"name":"B","imgs":["Animal Farm","The Handmaid's Tale"]},{"name":"C","imgs":["Foundation","Babel"]},{"name":"D","imgs":["Slottet"]},{"name":"E","imgs":["Hærværk"]},{"name":"F","imgs":["Seven Eleven"]},{"name":"EJ LÆST","imgs":[]}]},
+    "U2FsdGVkX19AioDIylCSFBLy3YnFANSX3eMnNgW26XE=":
+        {"title":"Den Store Bogklub Tier List","rows":[{"name":"S","imgs":["Babel","The Handmaid's Tale"]},{"name":"A","imgs":["Lord of the Flies","Animal Farm"]},{"name":"B","imgs":[]},{"name":"C","imgs":[]},{"name":"D","imgs":["Hærværk"]},{"name":"E","imgs":["Seven Eleven"]},{"name":"F","imgs":["Slottet"]},{"name":"EJ LÆST","imgs":["Foundation","The Hitchhiker's Guide to the Galaxy","Dune"]}]},
+    "U2FsdGVkX1/OTAb7qPt7Ig/ATCaH6jHMPYCupGgxUpg=":
+        {"title":"Den Store Bogklub Tier List","rows":[{"name":"S","imgs":["Hærværk","Dune"]},{"name":"A","imgs":["Animal Farm","Slottet"]},{"name":"B","imgs":["The Hitchhiker's Guide to the Galaxy"]},{"name":"C","imgs":["Lord of the Flies"]},{"name":"D","imgs":["Seven Eleven","Babel"]},{"name":"E","imgs":["Foundation","The Handmaid's Tale"]},{"name":"F","imgs":[]},{"name":"EJ LÆST","imgs":[]}]},
+    "U2FsdGVkX1+91aTIj/j1PQvVrTifPjrqdEkkh0XtNzo=":
+        {"title":"Den Store Bogklub Tier List","rows":[{"name":"S","imgs":["Dune"]},{"name":"A","imgs":["Animal Farm","The Hitchhiker's Guide to the Galaxy"]},{"name":"B","imgs":["Babel","Slottet","Foundation"]},{"name":"C","imgs":["The Handmaid's Tale","Lord of the Flies"]},{"name":"D","imgs":["Seven Eleven"]},{"name":"E","imgs":["Hærværk"]},{"name":"F","imgs":[]},{"name":"EJ LÆST","imgs":[]}]},
+    "U2FsdGVkX1+t20Fkx41vr0PoUddb4wFgTmfSwiIzNT8=":
+        {"title":"Den Store Bogklub Tier List","rows":[{"name":"S","imgs":[]},{"name":"A","imgs":["Slottet","Hærværk","Dune"]},{"name":"B","imgs":["Seven Eleven","Babel"]},{"name":"C","imgs":["Animal Farm","The Hitchhiker's Guide to the Galaxy"]},{"name":"D","imgs":["Lord of the Flies","The Handmaid's Tale"]},{"name":"E","imgs":[]},{"name":"F","imgs":["Foundation"]},{"name":"EJ LÆST","imgs":[]}]},
+    "U2FsdGVkX19BDcdANdeft4csbLHgVwUZeMsr93EIipA=":
+        {"title":"Den Store Bogklub Tier List","rows":[{"name":"S","imgs":["Dune"]},{"name":"A","imgs":["Animal Farm"]},{"name":"B","imgs":["Babel","Foundation"]},{"name":"C","imgs":[]},{"name":"D","imgs":[]},{"name":"E","imgs":[]},{"name":"F","imgs":["Seven Eleven"]},{"name":"EJ LÆST","imgs":["Hærværk","The Handmaid's Tale","Lord of the Flies","Slottet","The Hitchhiker's Guide to the Galaxy"]}]}
+    
+//     "U2FsdGVkX18/wd8LYcMm+fWmZa7isqYgT7B7r1Gbe/g=": {
+//         "title": "Den Store Bogklub Tier List",
+//         "rows": [
+//         {"name": "S", "imgs": ["Dune"]},
+//         {"name": "A", "imgs": ["Animal Farm"]},
+//         {"name": "B", "imgs": ["Slottet", "Hærværk"]},
+//         {"name": "C", "imgs": ["Babel"]},
+//         {"name": "D", "imgs": ["The Hitchhiker's Guide to the Galaxy"]},
+//         {"name": "E", "imgs": ["Lord of the Flies", "Foundation"]},
+//         {"name": "F", "imgs": ["The Handmaid's Tale", "Seven Eleven"]},
+//         {"name": "EJ LÆST", "imgs": []}
+//         ]
+//     },
+//     "U2FsdGVkX19AbXXVktYb0qUhUDxNW5q2VfUkmWppous=": {
+//         "title": "Den Store Bogklub Tier List",
+//         "rows": [
+//         {"name": "S", "imgs": ["Animal Farm", "Hærværk"]},
+//         {"name": "A", "imgs": ["Dune"]},
+//         {"name": "B", "imgs": ["The Hitchhiker's Guide to the Galaxy"]},
+//         {"name": "C", "imgs": ["Slottet", "Foundation"]},
+//         {"name": "D", "imgs": ["Seven Eleven"]},
+//         {"name": "E", "imgs": ["The Handmaid's Tale", "Babel"]},
+//         {"name": "F", "imgs": ["Lord of the Flies"]},
+//         {"name": "EJ LÆST", "imgs": []}
+//         ]
+//     },
+//     "U2FsdGVkX19S3jzwo+BDdvXxQnHJfe21IaJbKolkBCc=": {
+//         "title": "Den Store Bogklub Tier List",
+//         "rows": [
+//         {"name": "S", "imgs": ["The Hitchhiker's Guide to the Galaxy"]},
+//         {"name": "A", "imgs": ["Hærværk", "Slottet"]},
+//         {"name": "B", "imgs": ["Dune", "Foundation"]},
+//         {"name": "C", "imgs": ["Animal Farm"]},
+//         {"name": "D", "imgs": ["Lord of the Flies", "Babel"]},
+//         {"name": "E", "imgs": ["Seven Eleven"]},
+//         {"name": "F", "imgs": ["The Handmaid's Tale"]},
+//         {"name": "EJ LÆST", "imgs": []}
+//         ]
+//     },
+//     "U2FsdGVkX1+yVNixkQ4hQ0xzB2+ZVYtmETHW+suhxKM=": {
+//         "title": "Den Store Bogklub Tier List",
+//         "rows": [
+//         {"name": "S", "imgs": ["Slottet", "Babel"]},
+//         {"name": "A", "imgs": ["The Handmaid's Tale"]},
+//         {"name": "B", "imgs": ["Hærværk", "Seven Eleven"]},
+//         {"name": "C", "imgs": ["Dune"]},
+//         {"name": "D", "imgs": ["The Hitchhiker's Guide to the Galaxy"]},
+//         {"name": "E", "imgs": ["Foundation", "Animal Farm"]},
+//         {"name": "F", "imgs": ["Lord of the Flies"]},
+//         {"name": "EJ LÆST", "imgs": []}
+//         ]
+//     },
+//     "U2FsdGVkX1+Ta+bSzl6S383FTn+v+EG9RvwT2xGj7w4=": {
+//         "title": "Den Store Bogklub Tier List",
+//         "rows": [
+//         {"name": "S", "imgs": ["Hærværk"]},
+//         {"name": "A", "imgs": ["Dune", "Animal Farm"]},
+//         {"name": "B", "imgs": ["The Handmaid's Tale"]},
+//         {"name": "C", "imgs": ["Slottet"]},
+//         {"name": "D", "imgs": ["Babel", "The Hitchhiker's Guide to the Galaxy"]},
+//         {"name": "E", "imgs": ["Lord of the Flies", "Seven Eleven"]},
+//         {"name": "F", "imgs": ["Foundation"]},
+//         {"name": "EJ LÆST", "imgs": []}
+//         ]
+//     }
 }
 let book_data;
 let ascending_book_order;
@@ -299,12 +320,15 @@ window.addEventListener('load', () => {
 
     document.addEventListener('keydown', (e) => {
         // If the key is a number, focus on the corresponding person button
+        let buttons = document.querySelectorAll('.span-button');
         if (e.key >= '0' && e.key <= '9') {
             let idx = parseInt(e.key);
-            let buttons = document.querySelectorAll('.span-button');
-            if (idx <= (buttons.length-2)) {
-                buttons[idx+1].click();
+            if (idx <= (buttons.length-3)) {
+                buttons[idx+2].click();
             }
+        }
+        if (e.key === 'Escape') {
+            buttons[1].click();
         }
     });
 });
