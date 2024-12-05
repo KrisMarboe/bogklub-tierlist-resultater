@@ -252,6 +252,8 @@ window.addEventListener('load', () => {
             let person = user_data[name_key];
             person.rows.forEach(row => {
                 let tier = row.name;
+                if (tier === "EJ LÆST") return;
+
                 let imgs = row.imgs;
                 imgs.forEach(img_name => {
                     let icons = votes[img_name];
